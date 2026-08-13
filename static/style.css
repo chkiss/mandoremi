@@ -264,3 +264,13 @@ svg.scatter .ptlabel { fill: var(--text); font-size: 11px; pointer-events: none;
 a.btnlink { display: inline-block; background: var(--accent); color: #fff;
   padding: .5rem .9rem; border-radius: 8px; text-decoration: none; font-weight: 600; }
 a.btnlink:hover { filter: brightness(1.08); }
+
+/* Collapsible Settings panel (<details>/<summary>) — see showHome() in app.js */
+details.panel > summary { list-style: none; cursor: pointer; display: flex;
+  align-items: center; gap: .5rem; }
+details.panel > summary::-webkit-details-marker { display: none; }
+details.panel > summary::before { content: "▸"; color: var(--muted);
+  font-size: .85rem; transition: transform .15s ease; }
+details.panel[open] > summary::before { content: "▾"; }
+details.panel > summary h2 { margin: .1rem 0; }
+details.panel > summary:hover { color: var(--accent); }

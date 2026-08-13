@@ -318,7 +318,6 @@ async function showHome() {
       </div>
       <div class="error hidden" id="kwErr"></div>
     </form></div>`);
-  view.appendChild(kw);
   api("GET", "/api/known").then(k => {
     kw.querySelector("#kwCount").textContent = `${k.count} words`;
     kw.querySelector("#kwText").value = k.words.join(" ");
@@ -354,6 +353,7 @@ async function showHome() {
       <button type="submit">Add</button>
     </form></div>`);
   view.appendChild(s);
+  view.appendChild(kw);
   const sl = s.querySelector("#songList");
   if (!loose.length) sl.innerHTML = `<div class="muted">No standalone songs.</div>`;
   else for (const song of loose) {
@@ -406,8 +406,8 @@ async function showHome() {
     }
   });
 
-  const settings = el(`<div class="panel">
-    <h2>Settings</h2>
+  const settings = el(`<details class="panel">
+    <summary><h2>Settings</h2></summary>
     <label style="display:flex;gap:.5rem;align-items:center;font-size:.92rem;cursor:pointer">
       <input type="checkbox" id="setLyrSearch">
       Open a web search for the lyrics in a new tab when I click a song that has none
@@ -420,7 +420,7 @@ async function showHome() {
       <div class="error hidden" id="pwErr"></div>
       <span class="muted hidden" id="pwOk">Password changed. Other devices have been signed out.</span>
       <button type="submit">Save new password</button>
-    </form></div>`);
+    </form></details>`);
   view.appendChild(settings);
   const cb = settings.querySelector("#setLyrSearch");
   cb.checked = localStorage.getItem("lyricsSearch") === "yes";
