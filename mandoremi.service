@@ -1,0 +1,14 @@
+[Unit]
+Description=Mandoremi (Chinese lyrics HSK analyzer)
+After=network.target
+
+[Service]
+WorkingDirectory=%h/hsk-lyrics
+ExecStart=%h/hsk-lyrics/.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8790 --workers 1
+Restart=on-failure
+RestartSec=5
+MemoryMax=1200M
+Environment=HSKLYRICS_DB=%h/hsk-lyrics/hsklyrics.db
+
+[Install]
+WantedBy=default.target

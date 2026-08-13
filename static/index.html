@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mandoremi — Chinese lyrics HSK analyzer</title>
+<meta name="description" content="Paste the lyrics of any Chinese song and see its HSK difficulty: coverage at your level, which words and grammar make it hard, and whether it's worth studying.">
+<link rel="canonical" href="https://mandoremi.com/">
+<!-- Link cards: without these a shared URL renders bare on Reddit/Discord/HN,
+     which is where this app's audience actually lives. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Mandoremi">
+<meta property="og:url" content="https://mandoremi.com/">
+<meta property="og:title" content="How hard is that Chinese song, really?">
+<meta property="og:description" content="Paste any Chinese song's lyrics and see its HSK difficulty — vocabulary coverage at your level, the words and grammar that make it hard, and what to learn next. Free, no account needed.">
+<meta property="og:image" content="https://mandoremi.com/static/card.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How hard is that Chinese song, really?">
+<meta name="twitter:description" content="Paste any Chinese song's lyrics and see its HSK difficulty. Free, no account needed.">
+<meta name="twitter:image" content="https://mandoremi.com/static/card.png">
+<link rel="stylesheet" href="/static/style.css?v={{v}}">
+{{captcha}}
+</head>
+<body>
+<header>
+  <h1 id="brand">Mandoremi</h1>
+  {{nav}}
+  <div id="levelbox" class="hidden">
+    <label title="Coverage and colors assume you know everything at or below this level, plus everything on your known-words list">My level: <b id="levelLabel">HSK3</b></label>
+    <input type="range" id="levelSlider" min="0" max="7" step="1" value="3">
+  </div>
+  <div id="userbox" class="hidden">
+    <span id="userEmail"></span>
+    <button id="logoutBtn" class="ghost">Log out</button>
+  </div>
+</header>
+<main id="view"></main>
+<div id="popover" class="hidden"></div>
+<script src="/static/telemetry.js?v={{v}}"></script>
+<script src="/static/app.js?v={{v}}"></script>
+</body>
+</html>

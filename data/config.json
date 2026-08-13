@@ -1,0 +1,11 @@
+{
+  "analysis_version": 7,
+  "learning_value": {
+    "weight_repetition": 0.35,
+    "weight_few_unknown": 0.25,
+    "weight_coverage": 0.40,
+    "repetition_cap": 4.0,
+    "ideal_coverage": 0.90,
+    "coverage_sigma": 0.10
+  }
+}

@@ -1,0 +1,6 @@
+fastapi
+uvicorn[standard]
+spacy-pkuseg
+opencc-python-reimplemented
+requests
+pypinyin

@@ -1,0 +1,266 @@
+:root {
+  --bg: #f7f7f5; --panel: #ffffff; --text: #1d1d1f; --muted: #6e6e73;
+  --line: #e3e3e0; --accent: #b03a2e; --accent-soft: #f6e4e2;
+  --known: #2e7d32; --known-bg: #e6f2e6;
+  --next: #9a7d00; --next-bg: #faf3d1;
+  --hard: #b03a2e; --hard-bg: #f9e3e0;
+  --beyond: #6e6e73; --beyond-bg: #ececea;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #171719; --panel: #212124; --text: #ececee; --muted: #9a9aa2;
+    --line: #35353a; --accent: #e57368; --accent-soft: #3a2523;
+    --known: #7fc784; --known-bg: #223524;
+    --next: #d9c05a; --next-bg: #37321a;
+    --hard: #e57368; --hard-bg: #3c2422;
+    --beyond: #9a9aa2; --beyond-bg: #2c2c30;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 16px/1.5 -apple-system, "Segoe UI", Roboto, "Noto Sans", "Noto Sans SC", sans-serif; }
+header { display: flex; align-items: center; gap: 1.5rem; padding: .8rem 1.2rem;
+  background: var(--panel); border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+header h1 { font-size: 1.05rem; margin: 0; color: var(--accent); cursor: pointer; }
+#levelbox { display: flex; align-items: center; gap: .6rem; }
+#levelbox input[type=range] { width: 160px; accent-color: var(--accent); }
+#userbox { margin-left: auto; display: flex; align-items: center; gap: .8rem; color: var(--muted); font-size: .9rem; }
+main { max-width: 1060px; margin: 0 auto; padding: 1.2rem; }
+.hidden { display: none !important; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+  padding: 1.1rem 1.3rem; margin-bottom: 1rem; }
+h2 { font-size: 1.15rem; margin: .1rem 0 .8rem; }
+h3 { font-size: .95rem; margin: 1rem 0 .5rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+button { background: var(--accent); color: #fff; border: 0; border-radius: 8px;
+  padding: .5rem 1rem; font-size: .95rem; cursor: pointer; }
+button.ghost { background: transparent; color: var(--accent); border: 1px solid var(--line); }
+button.small { padding: .25rem .6rem; font-size: .82rem; }
+input[type=text], input[type=email], input[type=password], textarea {
+  width: 100%; padding: .55rem .7rem; border: 1px solid var(--line); border-radius: 8px;
+  background: var(--bg); color: var(--text); font-size: .95rem; }
+textarea { min-height: 180px; font-family: inherit; }
+form.stack > * { margin-bottom: .7rem; }
+.error { color: var(--hard); font-size: .9rem; }
+.muted { color: var(--muted); }
+a { color: var(--accent); text-decoration: none; cursor: pointer; }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: .7rem; margin-bottom: .5rem; }
+.card { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: .6rem .8rem; }
+.card .num { font-size: 1.5rem; font-weight: 650; }
+.card .lbl { font-size: .78rem; color: var(--muted); }
+
+.distbar { display: flex; height: 22px; border-radius: 6px; overflow: hidden; margin: .4rem 0 .2rem; }
+.distbar div { height: 100%; }
+.legend { display: flex; flex-wrap: wrap; gap: .8rem; font-size: .8rem; color: var(--muted); margin-top: .4rem; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; }
+.genrelegend { margin-bottom: .5rem; }
+.glitem { display: inline-flex; align-items: center; cursor: pointer; padding: 2px 6px; border-radius: 4px; user-select: none; }
+.glitem:hover { background: var(--line); }
+.glitem.active { outline: 2px solid var(--text); outline-offset: 1px; }
+.glitem i { margin-right: 5px; }
+.glclear { margin-left: .6rem; cursor: pointer; color: var(--muted); }
+a.ptlink.dim, text.ptlabel.dim { opacity: .1; }
+
+.lyrics { font-size: 1.35rem; line-height: 2.2; }
+.lyrics .tok { border-radius: 5px; padding: 0 2px; cursor: pointer; }
+.tok.known { color: var(--known); background: var(--known-bg); }
+.tok.next { color: var(--next); background: var(--next-bg); }
+.tok.hard { color: var(--hard); background: var(--hard-bg); }
+.tok.beyond { color: var(--beyond); background: var(--beyond-bg); }
+.tok.filler, .tok.latin { color: var(--muted); }
+.tok.idiom { text-decoration: underline dotted; }
+
+#popover { position: absolute; z-index: 10; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 8px; padding: .6rem .8rem; box-shadow: 0 4px 18px rgba(0,0,0,.18); font-size: .9rem;
+  max-width: 300px; }
+#popover b { font-size: 1.2rem; }
+.gloss { font-style: italic; }
+button.addkw { background: transparent; color: var(--known); border: 1px solid var(--known);
+  border-radius: 6px; padding: .05rem .5rem; font-size: .95rem; line-height: 1.3; }
+button.addkw:hover { background: var(--known-bg); }
+.backlink { display: inline-block; font-size: .85rem; margin-bottom: .35rem; }
+/* /artists reads as an article, so its prose gets a measure and its tables
+   keep the wider panel. */
+/* The app uses h3 as a small-caps label; in an article it is a real heading. */
+.post h3 { font-size: 1.02rem; margin: 1.5rem 0 .5rem; color: var(--text);
+  text-transform: none; letter-spacing: 0; }
+figure.gif { margin: 1rem 0; }
+figure.gif img, figure.gif video { max-width: min(100%, 440px); height: auto;
+  border-radius: 8px; display: block; }
+/* The width/height attributes already give the browser the intrinsic ratio,
+   so the box is the right height before the file lands and nothing below it
+   jumps; the black background only shows during that moment. */
+figure.gif video { background: #000; }
+figure.gif figcaption { max-width: min(100%, 440px); margin-top: .4rem;
+  font-size: .85rem; color: var(--muted); line-height: 1.4; }
+/* Two short tables read as one comparison and cost half the height. They stack
+   below 640px, where side-by-side would squeeze the artist names. */
+.twocol { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; }
+.twocol > div { flex: 1 1 18rem; min-width: 0; }
+.twocol h3:first-child { margin-top: .6rem; }
+ul.finds { padding-left: 1.1rem; }
+ul.finds li { margin-bottom: .6rem; }
+p.asof { text-align: center; margin: 1rem 0 2rem; font-size: .82rem; }
+/* Byline. Photo and text side by side, stacking is unnecessary — it is one
+   line of text next to a thumbnail at any width. */
+.byline { display: flex; gap: .9rem; align-items: center; }
+.byline p { margin: 0; }
+.byline .mugshot { border-radius: 50%; object-fit: cover; flex: 0 0 auto;
+  display: block; }
+.byline h2 { font-size: 1.05rem; }
+/* The 55-row table is the payoff for a reader looking for their own artist,
+   but unrolled it splits the article in two. <details> keeps it one line
+   until asked for, and works with scripting off. */
+details.fulltable > summary { cursor: pointer; padding: .2rem 0; font-size: 1rem; }
+details.fulltable > summary:hover { color: var(--accent); }
+details.fulltable[open] > summary { margin-bottom: .8rem; }
+
+/* Top bar. Identical on every page, so the nav never moves under you. */
+#topnav { display: flex; align-items: center; gap: 1.2rem; font-size: .9rem; }
+#analyticsNav b { font-size: .7em; opacity: .7; }
+.navdrop { position: relative; }
+.navmenu { display: none; position: absolute; left: -.7rem; top: 1.6rem; z-index: 40;
+  min-width: 10rem; padding: .35rem 0; background: var(--panel);
+  border: 1px solid var(--line); border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .35); }
+.navdrop:hover .navmenu, .navdrop:focus-within .navmenu { display: block; }
+.navmenu > a, .navmenu > .soon { display: block; padding: .3rem .8rem; white-space: nowrap; }
+.navmenu > a:hover { background: var(--accent-soft); }
+/* Written but not published: shown so the section's shape is visible, greyed
+   because a link that goes nowhere is worse than no link. */
+.navmenu > .soon { color: var(--muted); cursor: default; }
+.navmenu > .soon em { font-style: normal; font-size: .75em; opacity: .7; margin-left: .5rem; }
+/* Chengyu table. The English columns are prose, so this one must NOT inherit
+   the nowrap that lets the wide numeric tables scroll — wrapping is the point. */
+.panel > table.cytbl { display: table; overflow-x: visible; white-space: normal;
+  table-layout: fixed; }
+.cytbl th { cursor: default; }
+.cytbl td { vertical-align: top; white-space: normal; }
+/* Under table-layout:fixed the first row sets the columns, so the widths live
+   on the th. The Chinese column only ever holds four characters. */
+.cytbl th.cy { width: 9rem; }
+.cytbl th.lit { width: 32%; }
+.cytbl td.cy { font-size: 1.15rem; }
+.cytbl td.cy .py { font-size: .8rem; color: var(--muted); white-space: nowrap; }
+.cytbl td.cy .times { font-size: .75rem; color: var(--muted); margin-left: .35rem;
+  vertical-align: super; }
+.cytbl td.lit { font-size: .86rem; }
+.cytbl td.mean { font-size: .88rem; }
+.cytbl td.num, .cytbl th.num { text-align: right; width: 4.5rem;
+  font-variant-numeric: tabular-nums; }
+/* Assembled from the dictionary rather than attested — same dotted underline
+   the lyrics view uses for idiom tokens, so the signal is already learned. */
+.cytbl .litguess, .cytbl .pyguess { text-decoration: underline dotted;
+  text-decoration-color: var(--line); text-underline-offset: 3px; }
+/* Four columns of English prose do not fit a phone: every cell wraps to one or
+   two words and the reader loses which column they are in. Each chengyu becomes
+   a stacked card instead, with the column headings inlined as labels. */
+@media (max-width: 640px) {
+  .panel > table.cytbl, .cytbl tbody, .cytbl tr, .cytbl td { display: block;
+    width: auto; }
+  .cytbl thead { display: none; }
+  .cytbl tr { border-bottom: 1px solid var(--line); padding: .7rem 0; }
+  .cytbl tr:last-child { border-bottom: 0; }
+  .cytbl td { border-bottom: 0; padding: .1rem 0; }
+  .cytbl td.cy { font-size: 1.3rem; }
+  .cytbl td.cy .py { margin-left: .5rem; font-size: .85rem; }
+  .cytbl td.cy br { display: none; }
+  .cytbl td.lit::before { content: "Literally: "; color: var(--muted); }
+  .cytbl td.mean::before { content: "Means: "; color: var(--muted); }
+  .cytbl td.num { text-align: left; font-size: .82rem; color: var(--muted); }
+  .cytbl td.num::before { content: "In "; }
+  .cytbl td.num::after { content: " songs"; }
+  .cytbl td.num.none { display: none; }
+}
+/* The chengyu is the subject of its own page, so it gets to be the size of a
+   thing you are meant to look at rather than a heading you skim past. */
+h2.cyhead { font-size: 2.1rem; letter-spacing: .06em; margin: .2rem 0 .8rem; }
+/* The difficulty columns are the reason to open this page, so they must not be
+   the ones that scroll off the right edge on a phone. Wrapping the two text
+   columns is the cheaper trade than hiding the numbers. */
+/* Opt out of the wide-table scroll box entirely: this table wraps to fit, so
+   display:block would only shrink it to its content and strand the bars in a
+   column half the width of the panel. */
+.panel > table.cyidx { display: table; overflow-x: visible; width: 100%;
+  white-space: normal; }
+.cyidx td, .cyidx th { white-space: normal; }
+.cyidx td.num, .cyidx th.num { white-space: nowrap; }
+/* The bar is the point of the row, so give it the space rather than letting
+   two wrapping text columns squeeze it to a stub. */
+.cyidx td.bar, .cyidx th.bar { width: 40%; }
+.cyidx td.bar { vertical-align: middle; }
+@media (max-width: 640px) {
+  .panel > table.cyidx { display: table; overflow-x: visible; font-size: .85rem; }
+  .cyidx td, .cyidx th { padding: .45rem .25rem; }
+}
+.vocabtbl td:first-child { font-size: 1.1rem; white-space: nowrap; }
+.vocabtbl td.gloss { font-style: normal; font-size: .85rem; }
+
+table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+th, td { text-align: left; padding: .45rem .5rem; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); font-weight: 600; font-size: .8rem; cursor: pointer; user-select: none; }
+tr.clickable { cursor: pointer; }
+tr.clickable:hover td { background: var(--accent-soft); }
+.pill { display: inline-block; padding: .05rem .5rem; border-radius: 99px; font-size: .78rem; }
+.pill.l1,.pill.l2 { background: var(--known-bg); color: var(--known); }
+.pill.l3,.pill.l4 { background: var(--next-bg); color: var(--next); }
+.pill.l5,.pill.l6,.pill.l7 { background: var(--hard-bg); color: var(--hard); }
+.pill.l8,.pill.l9 { background: var(--beyond-bg); color: var(--beyond); }
+.wordlist { display: flex; flex-wrap: wrap; gap: .4rem; }
+.rank { font-weight: 700; color: var(--accent); }
+.rowactions { display: flex; gap: .5rem; align-items: center; }
+.topline { display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+.topline h2 { margin-right: auto; }
+
+/* --- public difficulty pages (/artists, /artist/<slug>) --- */
+/* These tables are server-rendered and NOT sortable, so undo the global
+   th{cursor:pointer} -- a pointer on a dead header is a promise we don't keep. */
+.board th, .kv th { cursor: default; }
+.board td.num, .board th.num, .kv td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.board tbody tr:hover td { background: var(--accent-soft); }
+.kv th { width: 42%; vertical-align: top; font-weight: 600; }
+/* Wide tables scroll inside the panel instead of the page. */
+.panel > table { display: block; overflow-x: auto; white-space: nowrap; }
+.lvbar { display: flex; width: 100%; min-width: 90px; height: 11px;
+  border-radius: 3px; overflow: hidden; background: var(--line); }
+/* The reader's own row in the "if you are at HSK n" table. */
+tr.atlevel th, tr.atlevel td { background: var(--accent-soft); }
+tr.atlevel th { font-weight: 700; }
+.lvbar { position: relative; }
+.lvbar span { display: block; height: 100%; }
+/* Marks the HSK 1-3 boundary — the quantity these tables are sorted by, which
+   otherwise has no visible edge because the eye tracks the HSK 1 block. */
+.lvbar .lvcut { position: absolute; top: -2px; bottom: -2px; width: 2px;
+  margin-left: -1px; background: var(--text); opacity: .75; }
+.lvlegend { margin: .6rem 0 .3rem; }
+/* Artist links inside song rows: readable, but not competing with the title. */
+a.artistlink { color: inherit; text-decoration: underline;
+  text-decoration-style: dotted; text-underline-offset: 2px; }
+a.artistlink:hover { color: var(--accent); }
+
+/* Difficulty-vs-variety scatter on /artists. */
+svg.scatter { width: 100%; height: auto; max-width: 100%; display: block; margin: .4rem 0; }
+svg.scatter .grid { stroke: var(--line); stroke-width: 1; }
+svg.scatter .ax { fill: var(--muted); font-size: 11px; }
+svg.scatter .axlabel { fill: var(--muted); font-size: 12px; }
+svg.scatter .pt { fill-opacity: .75; stroke: #1d2330; stroke-width: .6; }
+svg.scatter a:hover .pt { fill-opacity: 1; r: 7; }
+svg.scatter .ptlabel { fill: var(--text); font-size: 11px; pointer-events: none; }
+/* Full width, so the track spans exactly the same box as the scatter above it
+   and a tick sits under the part of the chart it describes. */
+.lvslider { --thumb: 16px; margin: .6rem 0 .2rem; font-size: 14px; }
+.lvslider-head { display: flex; align-items: baseline; gap: .6rem;
+  justify-content: space-between; margin-bottom: .1rem; }
+.lvslider label { color: var(--muted); }
+.lvslider input[type=range] { display: block; width: 100%; margin: 0;
+  accent-color: var(--accent); }
+/* Ticks are positioned by percentage (set inline per level), so the container
+   must be inset by half a thumb: that is where the thumb's centre actually
+   travels between, and lining up with the thumb is the whole point. */
+.lvticks { position: relative; height: 1.1rem; color: var(--muted);
+  font-size: .72rem; margin: .1rem calc(var(--thumb) / 2) 0; }
+.lvticks span { position: absolute; transform: translateX(-50%);
+  white-space: nowrap; }
+a.btnlink { display: inline-block; background: var(--accent); color: #fff;
+  padding: .5rem .9rem; border-radius: 8px; text-decoration: none; font-weight: 600; }
+a.btnlink:hover { filter: brightness(1.08); }

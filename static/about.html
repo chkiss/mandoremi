@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Mandoremi analyzes Chinese song lyrics against your HSK level and personal vocabulary: coverage, learning value, grammar patterns, and a recommended study order for whole playlists.">
+<title>About Mandoremi — learn Chinese through the songs you love</title>
+<link rel="canonical" href="https://mandoremi.com/about">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Mandoremi">
+<meta property="og:url" content="https://mandoremi.com/about">
+<meta property="og:title" content="Learn Chinese through the songs you love">
+<meta property="og:description" content="Mandoremi analyzes Chinese song lyrics against your HSK level and personal vocabulary: coverage, learning value, grammar patterns, and a study order for whole playlists.">
+<meta property="og:image" content="https://mandoremi.com/static/card.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://mandoremi.com/static/card.png">
+<link rel="stylesheet" href="/static/style.css?v={{v}}">
+</head>
+<body>
+<header>
+  <h1 id="brand"><a href="/" style="color:inherit">Mandoremi</a></h1>
+  {{nav}}
+  {{levelbox}}
+  <div id="userbox" style="margin-left:auto"><a href="/">Open the app →</a></div>
+</header>
+<main>
+  <div class="panel">
+    <h2>What is Mandoremi?</h2>
+    <p>Mandoremi is an app for Chinese language learners. It tells you how hard a Chinese
+      song would be for you to memorize, based on your vocabulary level, and identifies
+      which words you should learn next to improve your language skills. It measures
+      every song against what you know: your HSK level (HSK 3.0, levels 1–6 plus the
+      7–9 band) <i>and</i> your personal known-words list. For every song you get:</p>
+    <ul>
+      <li><b>Coverage</b> — the share of the lyrics you can already read.</li>
+      <li><b>Learning value</b> — a 0–100 score of how <i>efficient</i> the song is to study:
+        it rewards new words that repeat often, few distinct unknowns, and comfortable (~90%) coverage.</li>
+      <li><b>Color-coded lyrics</b> — every word tinted by difficulty, with a click-up
+        showing its HSK level and English meaning (CC-CEDICT):</li>
+    </ul>
+    <h3>How "learning value" is scored</h3>
+    <p>Every song gets a 0–100 learning value for <i>your</i> level. It's a weighted
+      blend of three things (the weights live in <code>data/config.json</code>):</p>
+    <ul>
+      <li><b>Coverage fit (40%)</b> — a bell curve centred on <b>90% known</b>. A song
+        that's almost all familiar is boring; one that's mostly unknown is demoralising.
+        The sweet spot is a song where you already know ~90% and meet the last 10% fresh.
+        Scoring 90% known gives full marks; 70% or 99% both score lower.</li>
+      <li><b>Few unknown words (25%)</b> — the smaller the <i>share</i> of distinct words
+        that sit above your level, the better. A song with 200 unique words where only 5
+        are new scores higher than one with 40 unique words where 20 are new.</li>
+      <li><b>Repetition of the unknown (35%)</b> — how often those new words <i>repeat</i>
+        (capped at 4 appearances). A word you hear four times sticks; a word you hear once
+        is gone. This is why a short, hook-heavy song can outrank a denser one.</li>
+    </ul>
+    <p>In short: learning value rewards songs that are <i>just</i> over your head, with
+      their hard words coming back often enough to actually learn. It's a per-song,
+      per-your-level number — the same track scores differently for an HSK 3 learner and
+      an HSK 6 one, because "unknown" means something different to each.</p>
+    <div class="lyrics" style="font-size:1.2rem">
+      <span class="tok known">月亮</span><span class="tok known">代表</span><span class="tok known">我</span><span class="tok known">的</span><span class="tok next">心</span>&nbsp;
+      <span class="tok hard">轰轰烈烈</span><span class="tok known">的</span><span class="tok next">爱情</span>
+    </div>
+    <div class="legend"><span><i style="background:var(--known-bg);border:1px solid var(--known)"></i>Known</span>
+      <span><i style="background:var(--next-bg);border:1px solid var(--next)"></i>One level up</span>
+      <span><i style="background:var(--hard-bg);border:1px solid var(--hard)"></i>Two+ levels up</span></div>
+    <ul>
+      <li><b>Words to learn</b> — the song's new vocabulary, sorted easiest-first, with
+        English meanings (Anki/CSV export ships with the paid tier).</li>
+      <li><b>Grammar patterns</b> — 46 constructions detected in the lyrics, from 了/着/过
+        aspect to separable verbs (见你一面), potential complements (听不懂) and
+        correlatives (越…越…).</li>
+      <li><b>A recommended study order</b> across a whole playlist — which song to learn
+        next for the most payoff at your level.</li>
+    </ul>
+  </div>
+
+  <div class="panel">
+    <h2>How it works</h2>
+    <p><b>Try it with your own lyrics — no account.</b> Paste any Chinese lyrics on the
+      home page and you get the full analysis instantly: stats, colored lyrics, grammar,
+      words to learn. Traditional characters are converted automatically. Nothing is stored.</p>
+    <p><b>With a free account</b>, songs and playlists are saved and analyzed once, then
+      re-scored instantly as you move your level slider or update your known-words list.
+      Import a public playlist by URL from <b>Spotify, Apple Music, YouTube, or NetEase
+      (网易云)</b> — Spotify and YouTube show at most the first 100 tracks — then paste
+      lyrics per song, or pick songs the database has already analyzed and skip straight
+      to studying. The playlist
+      view compares all your songs side by side: coverage, learning value, vocabulary
+      richness, and the ★ recommended order.</p>
+    <p><b>Your vocabulary, not just your level.</b> Upload a personal known-words list
+      and every song is re-judged against it — words you know count as known everywhere,
+      whatever their HSK level, and one-click <b>+</b> buttons grow the list as you study.</p>
+  </div>
+
+  <div class="panel">
+    <h2>Free vs. paid</h2>
+    <table>
+      <thead><tr><th>Feature</th><th>Free</th><th>Paid (planned)</th></tr></thead>
+      <tbody>
+        <tr><td>Anonymous lyrics analyzer</td><td>✓</td><td>✓</td></tr>
+        <tr><td>Playlists, saved songs, study order</td><td>✓</td><td>✓</td></tr>
+        <tr><td>Personal known-words list</td><td>✓</td><td>✓</td></tr>
+        <tr><td>Playlist import (Spotify, Apple Music, YouTube, NetEase)</td><td>✓</td><td>✓</td></tr>
+        <tr><td>Anki / CSV export of words to learn</td><td>—</td><td>✓</td></tr>
+        <tr><td>Auto-analyze: difficulty &amp; words without pasting (lyric text not stored)</td><td>✓</td><td>✓</td></tr>
+        <tr><td>Licensed lyric display: full color-coded text, no pasting</td><td>—</td><td>✓</td></tr>
+        <tr><td>Progress tracking / spaced repetition</td><td>—</td><td>planned</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel">
+    <h2>Roadmap</h2>
+    <ol>
+      <li><b>Licensed lyric display</b> — auto-analyze already scores songs without
+        pasting; the paid tier will add the licensed lyric text itself, so the
+        color-coded view works with one click. Licensing talks are the top priority.</li>
+      <li><b>Deeper playlist integration</b> — exploring official-API imports past the
+        100-track caps and a re-sync button so playlists stay current (depends on
+        platform approval, so no promises yet).</li>
+      <li><b>Account self-service</b> — password change and email reset.</li>
+      <li><b>Paid tier launch</b> — subscriptions via Stripe; existing free features stay free.</li>
+      <li><b>Progress &amp; spaced repetition</b> — mark words as learning/known per song,
+        with review scheduling.</li>
+    </ol>
+    <p class="muted">Feedback shapes this list — <a href="/">try the app</a> and tell us
+      what you'd pay for.</p>
+  </div>
+
+  <div class="panel" id="privacy">
+    <h2>Privacy</h2>
+    <p class="muted">In short: we collect what's needed to run the site, and we try to
+      look after it.</p>
+    <ul>
+      <li><b>Your account and content.</b> We store your email address, your password in
+        hashed form, and the material you save here, such as playlists, song lists,
+        lyrics you paste and your word lists. Lyrics you upload are not shown to other
+        users.</li>
+      <li><b>Automatic information.</b> Like most websites, our servers and logs may
+        record technical details of your visit, such as IP address, browser
+        information, and which pages and features were used.</li>
+      <li><b>Automatic analysis.</b> Where a song is analyzed automatically, we
+        generally store statistics about it — word and grammar counts — rather than the
+        lyric text, and those statistics may be reused across accounts.</li>
+      <li><b>Third parties.</b> We rely on outside services to operate the site,
+        including Cloudflare for bot protection and an IP-geolocation provider for
+        traffic reporting. Some of the above information may be processed by them.</li>
+      <li><b>Security.</b> Backups are encrypted and access is limited, but no website
+        can guarantee that information is completely secure.</li>
+      <li><b>We do not sell your personal information.</b></li>
+      <li><b>Questions, access or deletion.</b> Contact the site owner and we'll do our
+        best to help. This page may be updated from time to time.</li>
+    </ul>
+  </div>
+
+  <p class="muted" style="font-size:.8rem">Word lists: HSK 3.0. Definitions:
+    <a href="https://cc-cedict.org" rel="noopener">CC-CEDICT</a> (CC BY-SA 4.0).
+    Idioms: THUOCL. Mandoremi stores lyrics only on the uploading user's account.</p>
+  {{author}}
+</main>
+<script src="/static/level.js?v={{v}}"></script>
+<script src="/static/telemetry.js?v={{v}}"></script>
+<script>TLM.log("load", {p: "about"});</script>
+</body>
+</html>
