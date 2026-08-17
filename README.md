@@ -1,6 +1,6 @@
 # Mandoremi
 
-Mandoremi is a web app for Chinese language learners that analyzes the linguistic difficulty of Chinese song lyrics.
+Mandoremi is a web app for Chinese language learners that analyzes the linguistic difficulty of Chinese song lyrics. You can run it yourself at mandoremi.com. I've made this repo available for transparency and issue tracking/debugging.
 
 - **Standard:** HSK 3.0 — levels 1–6 plus a combined 7–9 band (word lists from krmanik/HSK-3.0; idioms from THUOCL 成语 lexicon)
 - **Segmentation:** spacy-pkuseg with an HSK+idiom user dictionary (longest match, never per-character); model auto-downloads to `~/.pkuseg` on first run
