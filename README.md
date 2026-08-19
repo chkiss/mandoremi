@@ -34,3 +34,7 @@ The app is intended to run as a `systemd --user` service bound to
 config are kept out of this repository (gitignored). See your local
 `deploy.sh` and `tools/mandoremi-limits.conf`. The nightly DB snapshot script
 is `tools/backup_db.py`.
+
+## License
+
+The Mandoremi source code is [MIT](LICENSE). Bundled third-party data (CC-CEDICT, the HSK 3.0 word lists, THUOCL) keeps its own licenses, several of them share-alike: see [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
