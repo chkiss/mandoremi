@@ -1,0 +1,37 @@
+# The suite loads the real pkuseg model and CC-CEDICT rather than mocking the
+# analysis pipeline, which is the point: segmentation bugs do not show up in a
+# stubbed tokenizer. spacy-pkuseg fetches its model on first use, so ~/.pkuseg
+# is cached between runs; a cold run just downloads it again.
+#
+# data/user_dict.txt is generated (tools/merge_chengyu.py) and gitignored. The
+# suite passes without it, which is what a fresh clone has, so it is not built
+# here on purpose: if a test ever starts depending on it, this job should be
+# the thing that notices.
+
+name: tests
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+
+      - name: Cache the pkuseg model
+        uses: actions/cache@v4
+        with:
+          path: ~/.pkuseg
+          key: pkuseg-${{ runner.os }}
+
+      - run: pip install -r requirements.txt pytest
+
+      - run: python -m pytest -q

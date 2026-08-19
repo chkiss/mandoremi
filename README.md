@@ -22,6 +22,18 @@ virtualenv .venv && .venv/bin/pip install -r requirements.txt
 - `app/`: FastAPI backend + analysis pipeline (normalize → segment → classify → grammar → stats)
 - `data/`: HSK word lists, chengyu, grammar patterns, normalization rules, learning-value weights (`config.json`)
 - `static/`: single-page vanilla-JS frontend
+- `tests/`: the pytest suite (176 tests), run on every push and pull request
+- `tools/`: corpus seeding, enrichment and QA scripts, plus the DB snapshot
+- `docs/`: [`SEEDING.md`](docs/SEEDING.md) (how the corpus is filled, and the lyric-text rules that must not be broken) and [`RESETS.md`](docs/RESETS.md)
+- `deploy/`: the `systemd --user` unit
+
+## Tests
+
+```
+.venv/bin/python -m pytest -q
+```
+
+The suite loads the real pkuseg model and CC-CEDICT rather than stubbing them, since a mocked tokenizer hides exactly the segmentation bugs worth catching. It passes on a fresh clone, without the gitignored generated files.
 
 > **Note:** the public crawlable pages (`/artists`, `/artist/{slug}`, `/song/...`, `/chengyu/...`, the sitemap) are wired in `app/public_pages.py`, which is intentionally **gitignored** from this repository. `app/main.py` registers those routes only when the file is present (it is, on the production deploy at mandoremi.com); a fresh clone of this repo runs as the analysis tool alone, with those routes simply absent. User data, the SQLite DB, the virtualenv, and generated data files are also gitignored.
 

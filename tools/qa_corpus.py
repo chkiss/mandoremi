@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """QA the shared seed corpus.
 
-Checks the things that actually go wrong (see tools/SEEDING.md):
+Checks the things that actually go wrong (see docs/SEEDING.md):
   * lyric text leaking into a table every user can read
   * confident-but-WRONG matches, whose fingerprint is one lyrics_hash shared
     by songs credited to different artists

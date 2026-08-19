@@ -113,7 +113,7 @@ def acquire(artist, title, version=None, text_source=None, text_sink=None,
     where the corpus read, the negative cache, the write-back and the
     text-free guarantee are applied together. Skipping it is how a re-run ends
     up paying ~9s each for thousands of already-known failures, and how lyric
-    text ends up somewhere it must not be. See tools/SEEDING.md.
+    text ends up somewhere it must not be. See docs/SEEDING.md.
 
     Deliberately holds no DB connection across the network call.
     """

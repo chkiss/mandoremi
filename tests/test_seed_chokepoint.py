@@ -37,7 +37,7 @@ def test_resolve_text_only_called_through_the_chokepoint():
         f"{offenders} call lyrics_fetch.resolve_text directly. Use "
         f"seed.acquire(artist, title) instead — it applies the shared-corpus "
         f"read, the seed_miss negative cache and the write-back together. "
-        f"See tools/SEEDING.md.")
+        f"See docs/SEEDING.md.")
 
 
 def test_corpus_is_not_written_by_raw_sql():
@@ -46,11 +46,11 @@ def test_corpus_is_not_written_by_raw_sql():
                  if rel not in CORPUS_WRITE_ALLOWED and pat.search(src)]
     assert not offenders, (
         f"{offenders} write seed_analysis with raw SQL, bypassing seed.store() "
-        f"and its no-lyric-text check. See tools/SEEDING.md.")
+        f"and its no-lyric-text check. See docs/SEEDING.md.")
 
 
 def test_seeding_doc_exists_and_covers_the_invariants():
-    doc = (ROOT / "tools" / "SEEDING.md").read_text(encoding="utf-8")
+    doc = (ROOT / "docs" / "SEEDING.md").read_text(encoding="utf-8")
     for token in ("seed_miss", "seed.store", "never stored", "stub"):
         assert token.lower() in doc.lower(), f"SEEDING.md no longer documents {token!r}"
 

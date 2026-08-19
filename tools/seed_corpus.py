@@ -111,7 +111,7 @@ def worker(q, version):
             return
         try:
             # One sanctioned path for corpus read + negative cache + fetch +
-            # write-back. Do NOT call lyrics_fetch here; see tools/SEEDING.md.
+            # write-back. Do NOT call lyrics_fetch here; see docs/SEEDING.md.
             reason, _ghost, _h = seed.acquire(
                 artist, title, version,
                 text_source=_vault_read, text_sink=_vault_write,
