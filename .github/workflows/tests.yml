@@ -32,6 +32,6 @@ jobs:
           path: ~/.pkuseg
           key: pkuseg-${{ runner.os }}
 
-      - run: pip install -r requirements.txt pytest
+      - run: pip install -r requirements-dev.txt
 
       - run: python -m pytest -q

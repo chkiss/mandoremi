@@ -1,0 +1,9 @@
+# Test-only dependencies. The runtime set is requirements.txt.
+#
+# httpx2 is not optional despite never being imported by hand: starlette's
+# TestClient is built on it, and every API test goes through TestClient. It
+# is pinned here rather than in requirements.txt because the server itself
+# never needs an HTTP client.
+-r requirements.txt
+pytest
+httpx2

@@ -30,8 +30,11 @@ virtualenv .venv && .venv/bin/pip install -r requirements.txt
 ## Tests
 
 ```
+.venv/bin/pip install -r requirements-dev.txt
 .venv/bin/python -m pytest -q
 ```
+
+`requirements-dev.txt` adds the two test-only packages. `httpx2` matters more than it looks: starlette's `TestClient` is built on it, and every API test goes through `TestClient`, so `requirements.txt` alone gets you errors rather than tests.
 
 The suite loads the real pkuseg model and CC-CEDICT rather than stubbing them, since a mocked tokenizer hides exactly the segmentation bugs worth catching. It passes on a fresh clone, without the gitignored generated files.
 
