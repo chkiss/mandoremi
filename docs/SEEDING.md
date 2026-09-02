@@ -116,7 +116,11 @@ DELETE FROM seed_miss WHERE artist_key='…'; -- one artist
 # 1. discover tracklists (writes a manifest, touches no DB)
 # NB: use the venv interpreter — the system python3 has no fastapi/pkuseg
 cd ~/hsk-lyrics
-./.venv/bin/python tools/discover_deep.py chart|indie|9ini
+./.venv/bin/python tools/discover_deep.py chart|indie|9ini|avalanche
+
+# 1a. the avalanche source needs its own two-stage discovery first
+./.venv/bin/python tools/discover_avalanche.py scrape    # Substack only
+./.venv/bin/python tools/discover_avalanche.py resolve   # NetEase + lyric gate
 
 # 2. seed the corpus from the manifests (resumable, honours seed_miss)
 ./.venv/bin/python tools/seed_corpus.py
@@ -126,6 +130,32 @@ cd ~/hsk-lyrics
 ```
 
 Back up the DB first: `cp hsklyrics.db hsklyrics.db.bak-<reason>`.
+
+## Sources have different yields — gate before you seed
+
+`chart` and `9ini` are pop: nearly every song carries Mandarin lyrics, so the
+manifest can go straight to `seed_corpus.py`. `avalanche` is not. Concrete
+Avalanche covers "non-pop music from China", which means instrumental post-rock,
+ambient, noise, and Mongolian- and Kazakh-language acts. Measured over 10
+artists / 60 songs, only 45% of songs carried substantial Chinese lyrics — and
+the split is by artist, not by song (惘闻 and 花伦 score 0/6; 小老虎 and
+动物园钉子户 score 6/6).
+
+At ~8.7s per song of sourcing, seeding an instrumental artist's full catalogue
+is pure waste. So `discover_avalanche.py resolve` samples 5 hot songs per artist
+and keeps only those with ≥2 carrying >80 hanzi. Rejects land in the manifest's
+`low_lyric_yield` list — **kept, not deleted**: a re-run re-checks them, because
+an instrumental act's next release may have vocals.
+
+Apply the same reasoning before adding any future source: measure the lyric
+yield on a sample first, and gate at the artist level if it is bimodal.
+
+## After a large seeding run: check the frozen /artists article
+
+`/artists` renders from `data/leaderboard_snapshot.json`, deliberately frozen —
+see the header of `tools/snapshot_leaderboard.py`. Growing the corpus can make
+its published prose wrong. Run `tools/check_leaderboard_drift.py`; fix only what
+it reports BROKEN, and treat NEW as material for a post.
 
 Always QA afterwards with `tools/qa_corpus.py`: duplicate lyric hashes across
 different artists indicate wrong matches, and thin analyses (<40 Chinese

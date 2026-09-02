@@ -137,6 +137,10 @@ def main():
     manifests = [os.path.expanduser("~/deep_manifest.json"),
                  os.path.expanduser("~/indie_deep_manifest.json"),
                  os.path.expanduser("~/9ini_deep_manifest.json"),
+                 # tools/discover_avalanche.py -> discover_deep.py avalanche.
+                 # Already past that tool's lyric gate: the instrumental and
+                 # non-Mandarin acts never reach this list.
+                 os.path.expanduser("~/avalanche_deep_manifest.json"),
                  # tools/deepen_artists.py: the re-discovery pass for artists
                  # whose first crawl under-covered them (see its docstring for
                  # the 周杰伦 case -- 16 songs for the biggest name in Mandopop).

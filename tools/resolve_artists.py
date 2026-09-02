@@ -42,6 +42,20 @@ def main():
             if artists.lookup(conn, name) is None:
                 todo.append(name)
 
+        # ...and the seed corpus, which the songs table does not cover: seeding
+        # creates no song rows, so an artist reached only by a discovery run
+        # (every Concrete Avalanche act) was invisible here and its corpus rows
+        # kept a NULL artist_id forever. artist_key is already normalized, so it
+        # doubles as the search string.
+        for r in conn.execute("SELECT DISTINCT artist_key FROM seed_analysis "
+                              "WHERE artist_id IS NULL AND artist_key != ''"):
+            k = r["artist_key"]
+            if not k or k in seen:
+                continue
+            seen.add(k)
+            if artists.lookup(conn, k) is None:
+                todo.append(k)
+
     if args.limit:
         todo = todo[:args.limit]
     print(f"{len(seen)} distinct artists, {len(todo)} unresolved")

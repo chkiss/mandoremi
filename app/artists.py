@@ -151,6 +151,11 @@ def latin_tokens(s):
     return frozenset(w for w in re.findall(r"[a-z0-9]+", (s or "").lower()) if w)
 
 
+# Han suffixes that decorate a band name without changing who it is.
+_GENERIC_SUFFIX_RE = re.compile(r"(乐队|樂隊|乐团|樂團|组合|組合|三重奏|二重奏|四重奏|"
+                                r"实验室|實驗室|工作室)")
+
+
 def _han_related(cand_key, want_keys):
     """One name carrying a suffix the other lacks. Requires a 2+ character Han
     run so it cannot fire on incidental latin overlap."""
@@ -158,7 +163,16 @@ def _han_related(cand_key, want_keys):
         if not w or not cand_key:
             continue
         short, long = (w, cand_key) if len(w) <= len(cand_key) else (cand_key, w)
-        if len(short) >= 2 and long.startswith(short) and re.search(r"[一-鿿]{2}", short):
+        if len(short) < 2 or not long.startswith(short):
+            continue
+        if not re.search(r"[一-鿿]{2}", short):
+            continue
+        # The suffix must not be more Han name: '小老虎' + 'J-Fever' is one act
+        # under a stage name, but '李志' + '洲' is a different person, as are
+        # 张梦/张梦奇 and 水树/水树奈奈. Generic band words are the one Han
+        # suffix that still means the same act.
+        rest = _GENERIC_SUFFIX_RE.sub("", long[len(short):])
+        if not re.search(r"[一-鿿]", rest):
             return True
     return False
 
@@ -205,27 +219,42 @@ def search(artist, extra_names=(), timeout=20):
     with urllib.request.urlopen(req, timeout=timeout) as r:
         d = json.loads(r.read().decode("utf-8", "replace"))
 
+    # Rank by HOW well each candidate matched, and only then by catalog size.
+    # Catalog size alone picked the wrong artist: searching 野孩子 returns both
+    # the real 野孩子 and 羽·泉, who merely list "野孩子" as an alias and carry a
+    # bigger catalog. Tier 0 = the artist's own name matched, tier 1 = one of
+    # their aliases or translated names, tier 2 = prefix-related.
     hits = []
     for a in (d.get("result") or {}).get("artists") or []:
-        names = [a.get("name", "")] + list(a.get("alias") or []) + list(a.get("transNames") or [])
-        for n in names:
-            ck = alias_key(n)
-            if ck in want_norm:
-                hits.append((a, "exact"))
+        # Stub pages match a name perfectly and hold nothing. Drop them BEFORE
+        # ranking: a stub sitting in tier 0 would shut out the real artist in a
+        # lower tier and the whole query would resolve to nothing.
+        if not (a.get("musicSize") or 0):
+            continue
+        own = [a.get("name", "")]
+        alt = list(a.get("alias") or []) + list(a.get("transNames") or [])
+        hit = None
+        for names, tier in ((own, 0), (alt, 1)):
+            for n in names:
+                ck = alias_key(n)
+                if ck in want_norm:
+                    hit = (tier, "exact")
+                    break
+                if latin_tokens(n) and latin_tokens(n) in want_lat:
+                    hit = (tier, "latin")
+                    break
+            if hit:
                 break
-            if latin_tokens(n) and latin_tokens(n) in want_lat:
-                hits.append((a, "latin"))
-                break
-            if _han_related(ck, want_norm):
-                hits.append((a, "han-prefix"))
-                break
+        if not hit and any(_han_related(alias_key(n), want_norm) for n in own + alt):
+            hit = (2, "han-prefix")
+        if hit:
+            hits.append((hit[0], a, hit[1]))
     if not hits:
         return None
-    # Prefer a real catalog: stub pages match names perfectly and hold nothing.
-    best, conf = max(hits, key=lambda h: (h[0].get("musicSize") or 0,
-                                          h[0].get("albumSize") or 0))
-    if not (best.get("musicSize") or 0):
-        return None
+    top = min(t for t, _, _ in hits)
+    _, best, conf = max((h for h in hits if h[0] == top),
+                        key=lambda h: (h[1].get("musicSize") or 0,
+                                       h[1].get("albumSize") or 0))
     return best["id"], best.get("name", q), conf
 
 
