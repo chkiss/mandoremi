@@ -37,9 +37,13 @@ OUT = os.path.join(public.DATA_DIR, "leaderboard_snapshot.json")
 # tell us if one of them stops resolving.
 MENTION_SLUGS = [
     "davidtao", "jaychou", "masiwei", "jonyj", "tizzyt", "asen",
-    "a188565", "hedgehog", "omnipotentyouthsociety", "crowdlu",
+    "a188565", "hedgehog", "crowdlu",
     "a166010",      # 梁博 Liang Bo — the rock artist who scores high
     "ronghaoli",
+    "deareloise",   # the three artists at or above 80% known at HSK 3
+    "a13416",       # 野孩子 Ye Haizi — also the most approachable at HSK 1
+    "explosicum",   # the second artist down at the hard end, beside 银临
+    "beyond",       # rock's bottom, now that 刺猬 is out of the featured set
 ]
 
 # Editorial glosses. The counts are computed; the English is written by hand,
@@ -56,6 +60,7 @@ IDIOM_GLOSS = {
     "莫名其妙": "baffling; without rhyme or reason",
     "一心一意": "wholeheartedly",
     "理所当然": "as a matter of course; naturally",
+    "人来人往": "people coming and going; a constant stream of passers-by",
 }
 
 # The single characters lyrics lean on whose two-syllable textbook partner is
@@ -198,9 +203,12 @@ def main():
             "median": round(covs[len(covs) // 2]) if covs else 0,
             "over80": len(over),
             # When only a handful clear 80%, naming them is the whole point of
-            # the row; a bare "1 of 55" invites the question and answers none.
+            # the row; a bare "3 of 58" invites the question and answers none.
+            # Cap raised from 2 to 3 when HSK 3 went 1 -> 3: the article's next
+            # paragraph names those artists, and the table above it had quietly
+            # stopped naming anyone.
             "who": [label(a) for a in sorted(
-                over, key=lambda a: -a["median_cov"][lv])] if len(over) <= 2
+                over, key=lambda a: -a["median_cov"][lv])] if len(over) <= 3
             else [],
         })
 
